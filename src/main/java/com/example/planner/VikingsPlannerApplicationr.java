@@ -8,7 +8,7 @@ package com.example.planner;
  *
  * @author kogi <astronaut.kogi@gmail.com>
  */
-public class Planner {
+public class VikingsPlannerApplicationr {
 
     public static void main(String[] args) {
     }
