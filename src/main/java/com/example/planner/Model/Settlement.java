@@ -27,6 +27,10 @@ public class Settlement {
     @Enumerated(EnumType.STRING)
     private SettlementType type;
     
+    private double x;
+    private double y;
+    private int scale;
+    
     @Column(name = "base_loot")
     private int baseLoot = 1000;
     
@@ -44,9 +48,12 @@ public class Settlement {
     
     public Settlement() {}
     
-    public Settlement(String name, SettlementType type, int baseLoot) {
+    public Settlement(String name, SettlementType type, double x, double y, int scale, int baseLoot) {
         this.name = name;
         this.type = type;
+        this.x = x;
+        this.y = y;
+        this.scale = scale;
         this.baseLoot = baseLoot;
     }
     
@@ -58,6 +65,15 @@ public class Settlement {
     }
     public SettlementType getType(){ 
         return type; 
+    }
+    public double getX(){ 
+        return x; 
+    }
+    public double getY(){ 
+        return y; 
+    }
+    public int getScale(){ 
+        return scale; 
     }
     public int getBaseLoot(){ 
         return baseLoot; 
@@ -82,6 +98,15 @@ public class Settlement {
     }
     public void setType(SettlementType type){ 
         this.type = type; 
+    }
+    public void setX(double x){ 
+        this.x = x; 
+    }
+    public void setY(double y){ 
+        this.y = y; 
+    }
+    public void setScale(int scale){ 
+        this.scale = scale; 
     }
     public void setBaseLoot(int baseLoot){ 
         this.baseLoot = baseLoot; 
