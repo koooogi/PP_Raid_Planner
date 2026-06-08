@@ -1,14 +1,15 @@
+package com.example.planner.ENUMs;
 /**
  *
  * @author kogi <astronaut.kogi@gmail.com>
  */
 public enum SettlementType {
     
-    MONASTERY("Монастырь", 0.7),
-    VILLAGE("Деревня", 0.8),
-    TOWN("Город", 1.0),
-    FORT("Форт", 1.3),
-    PORT("Порт", 1.1);
+    MONASTERY("Monastery", 0.7),
+    VILLAGE("Village", 0.8),
+    TOWN("Town", 1.0),
+    FORT("Fort", 1.3),
+    PORT("Port", 1.1);
     
     private String displayName;
     private double difficultyModifier;
