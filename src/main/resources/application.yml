@@ -1,1 +1,33 @@
+spring:
+  application:
+    name: vikings-planner
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vikings_planner
+    username: postgres
+    password: postgres-14
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
 
+app:
+  jwt:
+    secret: yourSecretKeyForJWTAtLeast32CharactersLong
+    expiration: 86400000
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+
+logging:
+  level:
+    com.example.vikings: DEBUG
