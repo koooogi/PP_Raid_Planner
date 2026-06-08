@@ -1,12 +1,101 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+package com.example.planner.Model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import com.example.planner.ENUMs.SettlementType;
 
 /**
  *
  * @author kogi <astronaut.kogi@gmail.com>
  */
+@Entity
+@Table(name = "settlements")
 public class Settlement {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String name;
+    
+    @Enumerated(EnumType.STRING)
+    private SettlementType type;
+    
+    @Column(name = "base_loot")
+    private int baseLoot = 1000;
+    
+    @Column(name = "slave_probability")
+    private double slaveProbability = 0.3;
+    
+    @Column(name = "min_slaves")
+    private int minSlaves = 0;
+    
+    @Column(name = "max_slaves")
+    private int maxSlaves = 10;
+    
+    @Column(length = 500)
+    private String description;
+    
+    public Settlement() {}
+    
+    public Settlement(String name, SettlementType type, int baseLoot) {
+        this.name = name;
+        this.type = type;
+        this.baseLoot = baseLoot;
+    }
+    
+    public Long getId(){ 
+        return id; 
+    }
+    public String getName(){ 
+        return name; 
+    }
+    public SettlementType getType(){ 
+        return type; 
+    }
+    public int getBaseLoot(){ 
+        return baseLoot; 
+    }
+    public double getSlaveProbability(){ 
+        return slaveProbability; 
+    }
+    public int getMinSlaves(){ 
+        return minSlaves; 
+    }
+    public int getMaxSlaves(){ 
+        return maxSlaves; 
+    }
+    public String getDescription(){ 
+        return description; 
+    }
+    public void setId(Long id){ 
+        this.id = id; 
+    }
+    public void setName(String name){ 
+        this.name = name; 
+    }
+    public void setType(SettlementType type){ 
+        this.type = type; 
+    }
+    public void setBaseLoot(int baseLoot){ 
+        this.baseLoot = baseLoot; 
+    }
+    public void setSlaveProbability(double slaveProbability){ 
+        this.slaveProbability = slaveProbability; 
+    }
+    public void setMinSlaves(int minSlaves){ 
+        this.minSlaves = minSlaves; 
+    }
+    public void setMaxSlaves(int maxSlaves){ 
+        this.maxSlaves = maxSlaves; 
+    }
+    public void setDescription(String description){ 
+        this.description = description; 
+    }
 }

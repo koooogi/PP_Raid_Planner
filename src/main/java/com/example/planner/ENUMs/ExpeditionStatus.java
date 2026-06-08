@@ -1,13 +1,14 @@
+package com.example.planner.ENUMs;
 /**
  *
  * @author kogi <astronaut.kogi@gmail.com>
  */
 public enum ExpeditionStatus {
     
-    PLANNED("Запланирован"),
-    SIMULATED("Симулирован"),
-    SUCCESS("Успешен"),
-    FAILED("Провален");
+    PLANNED("Planned"),
+    SIMULATED("Simulated"),
+    SUCCESS("Success"),
+    FAILED("Failed");
     
     private final String displayName;
     

@@ -1,3 +1,4 @@
+package com.example.planner.Model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
