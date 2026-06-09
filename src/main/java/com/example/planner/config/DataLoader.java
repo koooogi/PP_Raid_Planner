@@ -16,11 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author kogi <astronaut.kogi@gmail.com>
- */
-
 @Component
 public class DataLoader implements CommandLineRunner{
     
@@ -41,10 +36,8 @@ public class DataLoader implements CommandLineRunner{
     }
 
     private void loadShips() throws Exception{
-        if(shipRepository.count() > 0){
-            System.out.println("Ships already loaded, skip.");
-            return;
-        }
+        //убираем старые данные перед загрузкой
+        shipRepository.deleteAll();
         
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         InputStream inputStream = getClass().getResourceAsStream("/data/viking-ships.yml");
@@ -73,10 +66,8 @@ public class DataLoader implements CommandLineRunner{
     }
     
     private void loadCrewMembers() throws Exception{
-        if(crewRepository.count() > 0){
-            System.out.println("Crew already loaded, skip.");
-            return;
-        }
+        //убираем старые данные перед загрузкой
+        crewRepository.deleteAll();
         
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         InputStream inputStream = getClass().getResourceAsStream("/data/crew-members.yml");
@@ -104,10 +95,8 @@ public class DataLoader implements CommandLineRunner{
     }
     
     private void loadSettlements() throws Exception {
-        if (settlementRepository.count() > 0) {
-            System.out.println("Settlements already loaded, skip.");
-            return;
-        }
+        //убираем старые данные перед загрузкой
+        settlementRepository.deleteAll();
         
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         InputStream inputStream = getClass().getResourceAsStream("/data/settlements.yml");
@@ -124,8 +113,23 @@ public class DataLoader implements CommandLineRunner{
             Settlement settlement = new Settlement();
             settlement.setName((String) settlementData.get("name"));
             settlement.setType(SettlementType.valueOf((String) settlementData.get("type")));
-            settlement.setX((Double) settlementData.get("x"));
-            settlement.setY((Double) settlementData.get("y"));
+            
+            //Integer в Double
+            Object xObj = settlementData.get("x");
+            Object yObj = settlementData.get("y");
+            
+            if (xObj instanceof Integer) {
+                settlement.setX(((Integer) xObj).doubleValue());
+            } else {
+                settlement.setX((Double) xObj);
+            }
+            
+            if (yObj instanceof Integer) {
+                settlement.setY(((Integer) yObj).doubleValue());
+            } else {
+                settlement.setY((Double) yObj);
+            }
+            
             settlement.setScale((Integer) settlementData.get("scale"));
             settlement.setBaseLoot((Integer) settlementData.get("baseLoot"));
             settlement.setSlaveProbability((Double) settlementData.get("slaveProbability"));
@@ -136,5 +140,9 @@ public class DataLoader implements CommandLineRunner{
         }
         
         System.out.println("Loaded " + settlementsList.size() + " settlements from YAML");
+        
+        for (Settlement s : settlementRepository.findAll()) {
+            System.out.println("Settlement: " + s.getName() + " at (" + s.getX() + ", " + s.getY() + ")");
+        }
     }
 }

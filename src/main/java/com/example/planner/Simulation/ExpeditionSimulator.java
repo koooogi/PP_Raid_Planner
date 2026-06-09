@@ -92,7 +92,7 @@ public class ExpeditionSimulator {
                     return fail(result, "Expedition exceeds " + MAX_DAYS + " days");
                 }
                 
-                // Рабы тоже расходуют припасы
+                //рабы тоже расходуют припасы
                 int totalPeople = crewCount + currentSlaves;
                 int suppliesUsed = (int) (daysToReach * totalPeople * ship.getFoodConsumptionPerPerson());
                 currentSupplies -= suppliesUsed;
@@ -126,6 +126,7 @@ public class ExpeditionSimulator {
                         }
                     }
                     
+                    //среди награбленного могут быть припасы
                     currentSupplies += raid.getFoodLoot();
                 }
             }
@@ -140,8 +141,6 @@ public class ExpeditionSimulator {
             result.setTotalLootValue(totalLootValue);
             result.setLootByType(lootByType);
             result.setTotalSlaves(totalSlavesCaptured);
-            result.setTotalSuppliesConsumed(totalSupplies - currentSupplies);
-            result.setTotalSuppliesAvailable(totalSupplies);
             result.setStatus(ExpeditionStatus.SUCCESS);
             
         }catch(Exception e){
@@ -240,7 +239,7 @@ public class ExpeditionSimulator {
                 remaining -= amount;
             }
         }
-        
+                
         int foodLoot = (int) (totalLoot * (0.1 + random.nextDouble() * 0.2));
         
         result.setLootValue(totalLoot);

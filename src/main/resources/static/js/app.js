@@ -222,8 +222,6 @@ async function startSimulation() {
 📏 Total distance: ${result.totalDistance?.toFixed(1) || 0} units
 💰 Total loot value: ${result.totalLootValue}
 👥 Slaves captured: ${result.totalSlaves}
-📦 Supplies consumed: ${result.totalSuppliesConsumed}
-🍞 Supplies available: ${result.totalSuppliesAvailable}
 
 📊 Loot breakdown:
 ${lootText}
