@@ -68,3 +68,38 @@ crew:
     age: 30
     strength: 87
     supplies: 47
+  
+  - name: "Halfdan the Black"
+    clan: "Haraldson"
+    gender: "Male"
+    age: 28
+    strength: 86
+    supplies: 46
+  
+  - name: "King Ecbert"
+    clan: "Wessex"
+    gender: "Male"
+    age: 55
+    strength: 70
+    supplies: 35
+  
+  - name: "Athelstan"
+    clan: "Unknown"
+    gender: "Male"
+    age: 30
+    strength: 65
+    supplies: 38
+  
+  - name: "Torvi"
+    clan: "Earl"
+    gender: "Female"
+    age: 29
+    strength: 78
+    supplies: 42
+  
+  - name: "Helga"
+    clan: "Flokison"
+    gender: "Female"
+    age: 35
+    strength: 60
+    supplies: 40

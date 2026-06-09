@@ -41,13 +41,13 @@ public class DataLoader implements CommandLineRunner{
     }
 
     private void loadShips() throws Exception{
-        if (shipRepository.count() > 0){
+        if(shipRepository.count() > 0){
             System.out.println("Ships already loaded, skip.");
             return;
         }
         
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        InputStream inputStream = getClass().getResourceAsStream("/data/viking-ships.yaml");
+        InputStream inputStream = getClass().getResourceAsStream("/data/viking-ships.yml");
         
         if (inputStream == null) {
             System.out.println("ERROR: viking-ships.yaml not found!");
@@ -79,7 +79,7 @@ public class DataLoader implements CommandLineRunner{
         }
         
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        InputStream inputStream = getClass().getResourceAsStream("/data/crew-members.yaml");
+        InputStream inputStream = getClass().getResourceAsStream("/data/crew-members.yml");
         
         if(inputStream == null){
             System.out.println("ERROR: crew-members.yaml not found!");
@@ -110,7 +110,7 @@ public class DataLoader implements CommandLineRunner{
         }
         
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        InputStream inputStream = getClass().getResourceAsStream("/data/settlements.yaml");
+        InputStream inputStream = getClass().getResourceAsStream("/data/settlements.yml");
         
         if (inputStream == null) {
             System.out.println("ERROR: settlements.yaml not found!");
