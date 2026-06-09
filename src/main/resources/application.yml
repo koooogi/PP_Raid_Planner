@@ -4,6 +4,14 @@ spring:
   jackson:
     deserialization:
       accept-empty-string-as-null-object: true
+  web:
+    resources:
+      static-locations: classpath:/static/
+  security:
+    filter:
+      dispatcher-types: async, error, request
+    csrf:
+      enabled: false
   
   datasource:
     url: jdbc:postgresql://localhost:5432/vikings_planner

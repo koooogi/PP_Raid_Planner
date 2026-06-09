@@ -3,10 +3,6 @@ package com.example.planner.DTO;
 import com.example.planner.enums.ExpeditionStatus;
 import java.util.Map;
 
-/**
- *
- * @author kogi <astronaut.kogi@gmail.com>
- */
 public class SimulationResultDto {
     
     private boolean feasible;
@@ -18,8 +14,6 @@ public class SimulationResultDto {
     private int totalLootValue;
     private Map<String, Integer> lootByType;
     private int totalSlaves;
-    private int totalSuppliesConsumed;
-    private int totalSuppliesAvailable;
     
     public SimulationResultDto(){}
     
@@ -84,17 +78,5 @@ public class SimulationResultDto {
     }
     public void setTotalSlaves(int totalSlaves){ 
         this.totalSlaves = totalSlaves; 
-    }
-    
-    public int getTotalSuppliesConsumed(){ 
-        return totalSuppliesConsumed; 
-    }
-    public void setTotalSuppliesConsumed(int totalSuppliesConsumed){
-        this.totalSuppliesConsumed = totalSuppliesConsumed;
-    }
-    
-    public int getTotalSuppliesAvailable() { return totalSuppliesAvailable; }
-    public void setTotalSuppliesAvailable(int totalSuppliesAvailable){
-        this.totalSuppliesAvailable = totalSuppliesAvailable;
     }
 }

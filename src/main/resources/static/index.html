@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vikings Planner</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>⚔️ Vikings Planner ⚔️</h1>
+        <p>Plan your raid, get the loot!</p>
+
+        <!-- Аутентификация -->
+        <div id="authSection">
+            <div class="card">
+                <h2>Login / Register</h2>
+                <div>
+                    <div>
+                        <h3>Login</h3>
+                        <input type="text" id="loginUsername" placeholder="Username">
+                        <input type="password" id="loginPassword" placeholder="Password">
+                        <button id="loginBtn">Login</button>
+                    </div>
+                    <div>
+                        <h3>Register</h3>
+                        <input type="text" id="regUsername" placeholder="Username">
+                        <input type="password" id="regPassword" placeholder="Password">
+                        <button id="registerBtn">Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент (скрыт до логина) -->
+        <div id="mainContent" style="display: none;">
+            <!-- 1. Выбор корабля -->
+            <div class="card">
+                <h2>1. Choose your ship</h2>
+                <select id="shipSelect">
+                    <option value="">-- Select a ship --</option>
+                </select>
+                <div id="shipDesc"></div>
+            </div>
+
+            <!-- 2. Выбор команды -->
+            <div class="card">
+                <h2>2. Choose your crew</h2>
+                <div id="crewList"></div>
+                <p id="crewStats"></p>
+            </div>
+
+            <!-- 3. Выбор маршрута -->
+            <div class="card">
+                <h2>3. Choose your route</h2>
+                <div id="settlementsList"></div>
+                <div>
+                    <h3>Your route:</h3>
+                    <ul id="routeList"></ul>
+                </div>
+            </div>
+
+            <!-- 4. Кнопка запуска -->
+            <div class="card">
+                <button id="simulateBtn">START RAID!</button>
+            </div>
+
+            <!-- 5. Результат -->
+            <div id="resultCard" style="display: none;">
+                <div class="card">
+                    <h2>Raid Result</h2>
+                    <pre id="resultContent"></pre>
+                </div>
+            </div>
+
+            <!-- 6. История -->
+            <div class="card">
+                <h2>History</h2>
+                <div id="historyContent">No raids yet</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

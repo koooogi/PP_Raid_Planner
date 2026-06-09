@@ -17,11 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author kogi <astronaut.kogi@gmail.com>
- */
-
 @Service
 public class ExpeditionService {
     
@@ -41,6 +36,11 @@ public class ExpeditionService {
     
     public Expedition createExpedition(ExpeditionRequestDto request){
         
+        System.out.println("=== CREATE EXPEDITION ===");
+        System.out.println("Request shipId: " + request.getShipId());
+        System.out.println("Request crewIds: " + request.getCrewIds());
+        System.out.println("Request settlementIds: " + request.getSettlementIds());
+        
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new RuntimeException("User not found"));
@@ -50,19 +50,61 @@ public class ExpeditionService {
         expedition.setShipId(request.getShipId());
         
         try{
-            expedition.setCrewIds(mapper.writeValueAsString(request.getCrewIds()));
-            expedition.setRoute(mapper.writeValueAsString(request.getSettlementIds()));
+            String crewIdsJson = mapper.writeValueAsString(request.getCrewIds());
+            String routeJson = mapper.writeValueAsString(request.getSettlementIds());
+            String paramsJson = mapper.writeValueAsString(request);
+            
+            System.out.println("CrewIds JSON: " + crewIdsJson);
+            System.out.println("Route JSON: " + routeJson);
+            
+            expedition.setCrewIds(crewIdsJson);
+            expedition.setRoute(routeJson);
+            expedition.setSimulationParams(paramsJson);
         }catch (Exception e){
+            System.err.println("Failed to serialize: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Failed to serialize expedition data");
         }
         
         expedition.setStatus(ExpeditionStatus.PLANNED);
         
-        return expeditionRepository.save(expedition);
+        Expedition saved = expeditionRepository.save(expedition);
+        System.out.println("Saved expedition with ID: " + saved.getId());
+        System.out.println("Saved shipId: " + saved.getShipId());
+        System.out.println("Saved crewIds: " + saved.getCrewIds());
+        System.out.println("Saved route: " + saved.getRoute());
+        
+        return saved;
     }
     
     public SimulationResultDto simulateExpedition(Long expeditionId){
-        throw new UnsupportedOperationException("Simulation not implemented yet");
+        
+        Expedition expedition = expeditionRepository.findById(expeditionId)
+            .orElseThrow(() -> new RuntimeException("Expedition not found"));
+        
+        System.out.println("=== RETRIEVED EXPEDITION ===");
+        System.out.println("Expedition ID: " + expedition.getId());
+        System.out.println("Ship ID from DB: " + expedition.getShipId());
+        System.out.println("Crew IDs from DB: " + expedition.getCrewIds());
+        System.out.println("Route from DB: " + expedition.getRoute());
+        
+        SimulationResultDto result = simulator.simulate(expedition);
+        
+        expedition.setStatus(result.getStatus());
+        expedition.setTotalDays(result.getTotalDays());
+        expedition.setTotalLoot(result.getTotalLootValue());
+        expedition.setTotalSlaves(result.getTotalSlaves());
+        expedition.setFailureReason(result.getFailureReason());
+        
+        try{
+            expedition.setSimulationResult(mapper.writeValueAsString(result));
+        }catch (Exception e){
+            throw new RuntimeException("Failed to serialize simulation result");
+        }
+        
+        expeditionRepository.save(expedition);
+        
+        return result;
     }
     
     public List<ExpeditionHistoryDto> getUserHistory(){
