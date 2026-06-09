@@ -23,6 +23,19 @@ public class AuthService {
     
     public AuthResponse register(AuthRequest request){
         
+            System.out.println("=== REGISTER DEBUG ===");
+    System.out.println("Request object: " + request);
+    System.out.println("Username: '" + request.getUsername() + "'");
+    System.out.println("Password: '" + request.getPassword() + "'");
+    
+    if (request.getUsername() == null) {
+        throw new RuntimeException("Username is null");
+    }
+    
+    if (request.getPassword() == null) {
+        throw new RuntimeException("Password is null");
+    }
+        
         if (userRepository.findByUsername(request.getUsername()).isPresent()){
             throw new RuntimeException("Username already exists");
         }

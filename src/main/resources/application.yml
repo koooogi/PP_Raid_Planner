@@ -1,6 +1,9 @@
 spring:
   application:
-    name: vikings-planner
+    name: planner
+  jackson:
+    deserialization:
+      accept-empty-string-as-null-object: true
   
   datasource:
     url: jdbc:postgresql://localhost:5432/vikings_planner
@@ -30,4 +33,4 @@ springdoc:
 
 logging:
   level:
-    com.example.vikings: DEBUG
+    com.example.planner: DEBUG
