@@ -99,4 +99,8 @@ public class VikingShip {
     public void setDescription(String description){ 
         this.description = description; 
     }
+
+    public int getMaxCargo() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
