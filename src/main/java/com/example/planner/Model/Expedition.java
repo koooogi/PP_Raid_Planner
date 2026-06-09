@@ -1,6 +1,6 @@
 package com.example.planner.Model;
 
-import com.example.planner.ENUMs.ExpeditionStatus;
+import com.example.planner.enums.ExpeditionStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

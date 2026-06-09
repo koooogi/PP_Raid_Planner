@@ -1,4 +1,4 @@
-package com.example.planner.ENUMs;
+package com.example.planner.enums;
 /**
  *
  * @author kogi <astronaut.kogi@gmail.com>
