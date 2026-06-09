@@ -1,0 +1,70 @@
+crew:
+  - name: "Ragnar Lothbrok"
+    clan: "Lothbrok"
+    gender: "Male"
+    age: 35
+    strength: 95
+    supplies: 50
+  
+  - name: "Lagertha"
+    clan: "Lothbrok"
+    gender: "Female"
+    age: 32
+    strength: 90
+    supplies: 45
+  
+  - name: "Bjorn Ironside"
+    clan: "Lothbrok"
+    gender: "Male"
+    age: 25
+    strength: 92
+    supplies: 48
+  
+  - name: "Floki"
+    clan: "Flokison"
+    gender: "Male"
+    age: 40
+    strength: 75
+    supplies: 40
+  
+  - name: "Rollo"
+    clan: "Lothbrok"
+    gender: "Male"
+    age: 38
+    strength: 88
+    supplies: 50
+  
+  - name: "Ivar the Boneless"
+    clan: "Lothbrok"
+    gender: "Male"
+    age: 22
+    strength: 85
+    supplies: 45
+  
+  - name: "Ubbe"
+    clan: "Lothbrok"
+    gender: "Male"
+    age: 28
+    strength: 84
+    supplies: 46
+  
+  - name: "Hvitserk"
+    clan: "Lothbrok"
+    gender: "Male"
+    age: 26
+    strength: 83
+    supplies: 44
+  
+  - name: "Sigurd Snake-in-the-Eye"
+    clan: "Lothbrok"
+    gender: "Male"
+    age: 24
+    strength: 82
+    supplies: 43
+  
+  - name: "Harald Finehair"
+    clan: "Haraldson"
+    gender: "Male"
+    age: 30
+    strength: 87
+    supplies: 47
