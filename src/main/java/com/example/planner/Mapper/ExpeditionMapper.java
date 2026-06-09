@@ -27,14 +27,12 @@ public class ExpeditionMapper {
         dto.setTotalSlaves(expedition.getTotalSlaves());
         dto.setFailureReason(expedition.getFailureReason());
         
-        // Получаем название корабля
         if (expedition.getShipId() != null) {
             shipRepository.findById(expedition.getShipId()).ifPresent(ship -> {
                 dto.setShipName(ship.getName());
             });
         }
         
-        // Подсчитываем количество (из JSON строк)
         if (expedition.getCrewIds() != null) {
             String[] crewIds = expedition.getCrewIds().replaceAll("[\\[\\]]", "").split(",");
             dto.setCrewCount(crewIds.length);
