@@ -6,10 +6,6 @@ import com.example.planner.Repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author kogi <astronaut.kogi@gmail.com>
- */
 @Component
 public class ExpeditionMapper {
     
@@ -33,14 +29,28 @@ public class ExpeditionMapper {
             });
         }
         
-        if (expedition.getCrewIds() != null) {
-            String[] crewIds = expedition.getCrewIds().replaceAll("[\\[\\]]", "").split(",");
-            dto.setCrewCount(crewIds.length);
+        if (expedition.getCrewIds() != null && !expedition.getCrewIds().isEmpty() && !"[]".equals(expedition.getCrewIds())) {
+            String idsStr = expedition.getCrewIds().replaceAll("[\\[\\]]", "").trim();
+            if (!idsStr.isEmpty()) {
+                String[] crewIds = idsStr.split(",");
+                dto.setCrewCount(crewIds.length);
+            } else {
+                dto.setCrewCount(0);
+            }
+        } else {
+            dto.setCrewCount(0);
         }
         
-        if (expedition.getRoute() != null) {
-            String[] routeIds = expedition.getRoute().replaceAll("[\\[\\]]", "").split(",");
-            dto.setSettlementCount(routeIds.length);
+        if (expedition.getRoute() != null && !expedition.getRoute().isEmpty() && !"[]".equals(expedition.getRoute())) {
+            String idsStr = expedition.getRoute().replaceAll("[\\[\\]]", "").trim();
+            if (!idsStr.isEmpty()) {
+                String[] routeIds = idsStr.split(",");
+                dto.setSettlementCount(routeIds.length);
+            } else {
+                dto.setSettlementCount(0);
+            }
+        } else {
+            dto.setSettlementCount(0);
         }
         
         return dto;

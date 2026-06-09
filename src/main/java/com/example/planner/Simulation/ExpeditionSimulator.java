@@ -20,11 +20,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author kogi <astronaut.kogi@gmail.com>
- */
-
 @Component
 public class ExpeditionSimulator {
     
@@ -76,7 +71,6 @@ public class ExpeditionSimulator {
             int currentSlaves = 0;
             int currentSupplies = totalSupplies;
             int successfulRaids = 0;
-            int fightersCount = crewCount;
             
             for(int i = 0; i < route.size(); i++){
                 Settlement settlement = route.get(i);
@@ -98,6 +92,7 @@ public class ExpeditionSimulator {
                     return fail(result, "Expedition exceeds " + MAX_DAYS + " days");
                 }
                 
+                // Рабы тоже расходуют припасы
                 int totalPeople = crewCount + currentSlaves;
                 int suppliesUsed = (int) (daysToReach * totalPeople * ship.getFoodConsumptionPerPerson());
                 currentSupplies -= suppliesUsed;
@@ -106,7 +101,7 @@ public class ExpeditionSimulator {
                     return fail(result, "Not enough supplies to reach " + settlement.getName());
                 }
                 
-                RaidResult raid = simulateRaid(settlement, fightersCount, currentCargo, maxCargo);
+                RaidResult raid = simulateRaid(settlement, crewCount, currentCargo, maxCargo, currentSlaves, maxSlaves);
                 
                 if(raid.isSuccess()){
                     successfulRaids++;
@@ -121,11 +116,13 @@ public class ExpeditionSimulator {
                     currentSlaves += actualSlaves;
                     totalSlavesCaptured += actualSlaves;
                     
-                    double proportion = (double) actualLoot / raid.getLootValue();
-                    for(Map.Entry<LootType, Integer> entry : raid.getLootByType().entrySet()){
-                        int proportionalLoot = (int) (proportion * entry.getValue());
-                        if (proportionalLoot > 0) {
-                            lootByType.merge(entry.getKey().name(), proportionalLoot, Integer::sum);
+                    if (raid.getLootValue() > 0) {
+                        double proportion = (double) actualLoot / raid.getLootValue();
+                        for(Map.Entry<LootType, Integer> entry : raid.getLootByType().entrySet()){
+                            int proportionalLoot = (int) (proportion * entry.getValue());
+                            if (proportionalLoot > 0) {
+                                lootByType.merge(entry.getKey().name(), proportionalLoot, Integer::sum);
+                            }
                         }
                     }
                     
@@ -158,8 +155,13 @@ public class ExpeditionSimulator {
     
     private List<CrewMember> getCrewMembers(String crewIdsJson){
         try{
+            if (crewIdsJson == null || crewIdsJson.trim().isEmpty() || "[]".equals(crewIdsJson.trim())) {
+                return new ArrayList<>();
+            }
             String idsStr = crewIdsJson.replaceAll("[\\[\\]]", "").trim();
-            if (idsStr.isEmpty()) return new ArrayList<>();
+            if (idsStr.isEmpty()) {
+                return new ArrayList<>();
+            }
             
             List<Long> crewIds = Arrays.stream(idsStr.split(","))
                 .map(String::trim)
@@ -174,8 +176,13 @@ public class ExpeditionSimulator {
     
     private List<Settlement> getRoute(String routeJson){
         try{
+            if (routeJson == null || routeJson.trim().isEmpty() || "[]".equals(routeJson.trim())) {
+                return new ArrayList<>();
+            }
             String idsStr = routeJson.replaceAll("[\\[\\]]", "").trim();
-            if (idsStr.isEmpty()) return new ArrayList<>();
+            if (idsStr.isEmpty()) {
+                return new ArrayList<>();
+            }
             
             List<Long> settlementIds = Arrays.stream(idsStr.split(","))
                 .map(String::trim)
@@ -197,7 +204,7 @@ public class ExpeditionSimulator {
         return Math.max(MIN_SPEED, speed);
     }
     
-    private RaidResult simulateRaid(Settlement settlement, int fightersCount, int currentCargo, int maxCargo){
+    private RaidResult simulateRaid(Settlement settlement, int fightersCount, int currentCargo, int maxCargo, int currentSlaves, int maxSlaves){
         RaidResult result = new RaidResult();
         
         double successProb = calculateSuccessProbability(fightersCount, settlement.getScale());
@@ -209,7 +216,11 @@ public class ExpeditionSimulator {
         }
         
         int freeSpace = maxCargo - currentCargo;
-        if (freeSpace <= 0) {
+        int freeSlaveSpace = maxSlaves - currentSlaves;
+        
+        if (freeSpace <= 0 && freeSlaveSpace <= 0) {
+            result.setLootValue(0);
+            result.setSlaves(0);
             return result;
         }
         
@@ -220,8 +231,8 @@ public class ExpeditionSimulator {
         Map<LootType, Integer> lootByType = new HashMap<>();
         int remaining = totalLoot;
         
-        for(LootType type : LootType.values()){
-            if (type == LootType.SLAVES) continue;
+        LootType[] types = {LootType.GOLD, LootType.SILVER, LootType.WEAPONS, LootType.JEWELRY};
+        for(LootType type : types){
             int amount = (int) (totalLoot * (0.1 + random.nextDouble() * 0.3));
             if (amount > remaining) amount = remaining;
             if (amount > 0) {
@@ -236,9 +247,9 @@ public class ExpeditionSimulator {
         result.setLootByType(lootByType);
         result.setFoodLoot(foodLoot);
         
-        double slaveProb = settlement.getSlaveProbability();
-        if(random.nextDouble() < slaveProb){
+        if(random.nextDouble() < settlement.getSlaveProbability()){
             int slaves = settlement.getMinSlaves() + random.nextInt(settlement.getMaxSlaves() - settlement.getMinSlaves() + 1);
+            slaves = Math.min(slaves, freeSlaveSpace);
             result.setSlaves(slaves);
         }
         

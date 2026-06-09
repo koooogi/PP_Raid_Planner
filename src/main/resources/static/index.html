@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vikings Planner</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Vikings Planner️</h1>
+            <p class="subtitle">Plan your raid, get the loot!</p>
+        </header>
+
+        <div class="auth-section" id="authSection">
+            <div class="card">
+                <h2>Login / Register</h2>
+                <div class="auth-forms">
+                    <div class="auth-form">
+                        <h3>Login</h3>
+                        <input type="text" id="loginUsername" placeholder="Username">
+                        <input type="password" id="loginPassword" placeholder="Password">
+                        <button class="btn btn-primary" id="loginBtn">Login</button>
+                    </div>
+                    <div class="auth-form">
+                        <h3>Register</h3>
+                        <input type="text" id="regUsername" placeholder="Username">
+                        <input type="password" id="regPassword" placeholder="Password">
+                        <button class="btn btn-secondary" id="registerBtn">Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content hidden" id="mainContent">
+            <div class="card">
+                <h2>1. Choose your ship</h2>
+                <select id="shipSelect" class="full-width">
+                    <option value="">-- Select a ship --</option>
+                </select>
+                <div id="shipDescription" class="ship-description" style="margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; display: none;">
+                    <strong>Description:</strong> <span id="shipDescText"></span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>2. Choose your crew</h2>
+                <div id="crewList" class="crew-list"></div>
+                <div id="crewStats" class="stats"></div>
+            </div>
+
+            <div class="card">
+                <h2>3. Choose your route</h2>
+                <div id="settlementsList" class="settlements-list"></div>
+                <div id="routeList" class="route-list">
+                    <h3>Your route (in order):</h3>
+                    <ul id="selectedRoute"></ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <button class="btn btn-primary btn-large" id="simulateBtn">⚔️ START RAID! ⚔️</button>
+            </div>
+
+            <div class="card hidden" id="resultCard">
+                <h2>📜 Raid Result</h2>
+                <pre id="resultContent"></pre>
+            </div>
+
+            <div class="card" id="historyCard">
+                <h2>📜 History of your raids</h2>
+                <div id="historyContent">No raids yet</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 settlements:
   - name: "Lindisfarne"
     type: "MONASTERY"
-    x: 55.68
-    y: -1.80
+    x: 15
+    y: 10
     scale: 30
     baseLoot: 5000
     slaveProbability: 0.3
@@ -12,8 +12,8 @@ settlements:
   
   - name: "Paris"
     type: "TOWN"
-    x: 48.86
-    y: 2.35
+    x: 45
+    y: 5
     scale: 80
     baseLoot: 15000
     slaveProbability: 0.2
@@ -23,8 +23,8 @@ settlements:
   
   - name: "York"
     type: "TOWN"
-    x: 53.96
-    y: -1.08
+    x: 20
+    y: 12
     scale: 50
     baseLoot: 8000
     slaveProbability: 0.25
@@ -34,19 +34,19 @@ settlements:
   
   - name: "Kattegat"
     type: "PORT"
-    x: 57.85
-    y: 10.25
+    x: 0
+    y: 0
     scale: 40
     baseLoot: 6000
     slaveProbability: 0.15
     minSlaves: 0
     maxSlaves: 8
-    description: "Main Viking trading port"
+    description: "Main Viking trading port (starting point)"
   
   - name: "Northumbria"
     type: "VILLAGE"
-    x: 55.02
-    y: -2.10
+    x: 18
+    y: 11
     scale: 25
     baseLoot: 3000
     slaveProbability: 0.2
@@ -56,8 +56,8 @@ settlements:
   
   - name: "Wessex"
     type: "VILLAGE"
-    x: 51.18
-    y: -1.83
+    x: 22
+    y: 8
     scale: 35
     baseLoot: 4000
     slaveProbability: 0.2
@@ -67,8 +67,8 @@ settlements:
   
   - name: "Mercia"
     type: "VILLAGE"
-    x: 52.80
-    y: -1.63
+    x: 21
+    y: 10
     scale: 32
     baseLoot: 3800
     slaveProbability: 0.18
@@ -78,8 +78,8 @@ settlements:
   
   - name: "Dublin"
     type: "PORT"
-    x: 53.35
-    y: -6.26
+    x: 10
+    y: 15
     scale: 45
     baseLoot: 5500
     slaveProbability: 0.22
@@ -89,8 +89,8 @@ settlements:
   
   - name: "Jorvik"
     type: "TOWN"
-    x: 53.96
-    y: -1.08
+    x: 19
+    y: 12
     scale: 48
     baseLoot: 7500
     slaveProbability: 0.24
@@ -100,8 +100,8 @@ settlements:
   
   - name: "Constantinople"
     type: "FORT"
-    x: 41.01
-    y: 28.96
+    x: 55
+    y: 20
     scale: 90
     baseLoot: 20000
     slaveProbability: 0.1
