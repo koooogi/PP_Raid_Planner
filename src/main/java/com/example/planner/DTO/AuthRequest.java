@@ -1,12 +1,17 @@
 package com.example.planner.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author kogi <astronaut.kogi@gmail.com>
  */
 public class AuthRequest {
     
+    @JsonProperty("username")
     private String username;
+    
+    @JsonProperty("password")
     private String password;
     
     public AuthRequest(){}

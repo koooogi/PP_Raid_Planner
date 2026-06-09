@@ -8,6 +8,7 @@ import com.example.planner.Model.Expedition;
 import com.example.planner.Model.User;
 import com.example.planner.Repository.ExpeditionRepository;
 import com.example.planner.Repository.UserRepository;
+import com.example.planner.Simulation.ExpeditionSimulator;
 import com.example.planner.enums.ExpeditionStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
