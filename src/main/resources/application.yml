@@ -8,10 +8,9 @@ spring:
     resources:
       static-locations: classpath:/static/
   security:
-    filter:
-      dispatcher-types: async, error, request
-    csrf:
-      enabled: false
+    user:
+      name:
+      password:
   
   datasource:
     url: jdbc:postgresql://localhost:5432/vikings_planner
@@ -27,11 +26,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-
-app:
-  jwt:
-    secret: yourSecretKeyForJWTAtLeast32CharactersLong
-    expiration: 86400000
 
 springdoc:
   swagger-ui:
