@@ -5,7 +5,7 @@ let selectedCrewIds = [];
 let routeIds = [];
 let shipsData = [];
 let settlementsData = [];
-let crewData = [];  // Храним данные о всех воинах
+let crewData = [];
 
 function calculateDistance(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -30,87 +30,34 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
     return response.json();
 }
 
-function updateSuppliesInfo() {
-    // Суммируем припасы выбранных воинов
-    let totalSupplies = 0;
-    selectedCrewIds.forEach(id => {
-        const crew = crewData.find(c => c.id == id);
-        if (crew) {
-            totalSupplies += crew.supplies;
-        }
-    });
+// Проверка лимита гребцов
+function checkCrewLimit() {
+    const select = document.getElementById('shipSelect');
+    const selectedOption = select.options[select.selectedIndex];
+    const maxRowers = selectedOption ? parseInt(selectedOption.getAttribute('data-max-rowers')) : 0;
+    const crewCount = selectedCrewIds.length;
     
-    // Расход в день на выбранных воинов (каждый ест 2)
-    const dailyConsumption = selectedCrewIds.length * 2;
-    const daysOfFood = dailyConsumption > 0 ? Math.floor(totalSupplies / dailyConsumption) : 0;
+    const crewStats = document.getElementById('crewStats');
+    const simulateBtn = document.getElementById('simulateBtn');
     
-    document.getElementById('totalSupplies').innerText = totalSupplies;
-    document.getElementById('daysOfFood').innerText = daysOfFood;
-    
-    // Предупреждение, если мало еды
-    const daysSpan = document.getElementById('daysOfFood');
-    if (daysOfFood < 10 && daysOfFood > 0) {
-        daysSpan.style.color = '#ffaa00';
-    } else if (daysOfFood === 0 && selectedCrewIds.length > 0) {
-        daysSpan.style.color = '#ff6b6b';
+    if (maxRowers > 0 && crewCount > maxRowers) {
+        crewStats.innerHTML = `⚠️ Selected: ${crewCount} warriors (EXCEEDS LIMIT of ${maxRowers})!`;
+        crewStats.style.color = '#ff6b6b';
+        if (simulateBtn) simulateBtn.disabled = true;
+        return false;
     } else {
-        daysSpan.style.color = '#e0e0e0';
+        crewStats.innerHTML = `Selected: ${crewCount} warriors`;
+        crewStats.style.color = '#c5d6e8';
+        if (simulateBtn) simulateBtn.disabled = false;
+        return true;
     }
 }
 
-function updateRouteInfo() {
-    if (routeIds.length === 0) {
-        document.getElementById('totalDistance').innerText = '0';
-        document.getElementById('estimatedDays').innerText = '0';
-        return;
-    }
-    
-    // Расчет общей дистанции
-    let totalDistance = 0;
-    let prevX = 0, prevY = 0;
-    
-    routeIds.forEach(id => {
-        const settlement = settlementsData.find(s => s.id == id);
-        if (settlement) {
-            const dist = calculateDistance(prevX, prevY, settlement.x, settlement.y);
-            totalDistance += dist;
-            prevX = settlement.x;
-            prevY = settlement.y;
-        }
-    });
-    
-    // Расчет скорости на основе выбранных воинов и корабля
-    const shipId = document.getElementById('shipSelect').value;
-    let estimatedDays = 0;
-    
-    if (shipId && selectedCrewIds.length > 0) {
-        const ship = shipsData.find(s => s.id == shipId);
-        if (ship) {
-            const speed = ship.baseSpeed * Math.min(1.0, selectedCrewIds.length / ship.maxRowers);
-            estimatedDays = speed > 0 ? Math.ceil(totalDistance / speed) : 0;
-        }
-    }
-    
-    document.getElementById('totalDistance').innerText = totalDistance.toFixed(1);
-    document.getElementById('estimatedDays').innerText = estimatedDays;
-    
-    // Предупреждение, если не хватит еды
-    const totalSupplies = selectedCrewIds.reduce((sum, id) => {
-        const crew = crewData.find(c => c.id == id);
-        return sum + (crew ? crew.supplies : 0);
-    }, 0);
-    const dailyConsumption = selectedCrewIds.length * 2;
-    const daysOfFood = dailyConsumption > 0 ? Math.floor(totalSupplies / dailyConsumption) : 0;
-    
-    const daysSpan = document.getElementById('estimatedDays');
-    if (estimatedDays > daysOfFood && daysOfFood > 0) {
-        daysSpan.style.color = '#ffaa00';
-        daysSpan.title = `Warning: Not enough supplies! Need ${estimatedDays} days but only ${daysOfFood} days of food.`;
-    } else if (estimatedDays > 0 && daysOfFood === 0) {
-        daysSpan.style.color = '#ff6b6b';
-    } else {
-        daysSpan.style.color = '#e0e0e0';
-    }
+// Расчет максимального количества воинов для выбранного корабля
+function getMaxRowers() {
+    const select = document.getElementById('shipSelect');
+    const selectedOption = select.options[select.selectedIndex];
+    return selectedOption ? parseInt(selectedOption.getAttribute('data-max-rowers')) : 0;
 }
 
 async function loadShips() {
@@ -120,6 +67,10 @@ async function loadShips() {
     shipsData.forEach(ship => {
         const option = document.createElement('option');
         option.value = ship.id;
+        option.setAttribute('data-max-rowers', ship.maxRowers);
+        option.setAttribute('data-max-cargo', ship.maxCargo);
+        option.setAttribute('data-max-slaves', ship.maxSlaves);
+        option.setAttribute('data-base-speed', ship.baseSpeed);
         option.textContent = `${ship.name} (Max rowers: ${ship.maxRowers}, Cargo: ${ship.maxCargo})`;
         select.appendChild(option);
     });
@@ -130,10 +81,13 @@ async function loadShips() {
             const ship = shipsData.find(s => s.id == this.value);
             shipDesc.innerHTML = `<strong>Description:</strong> ${ship.description}<br>
                                   <strong>Base speed:</strong> ${ship.baseSpeed} knots<br>
+                                  <strong>Max rowers:</strong> ${ship.maxRowers}<br>
+                                  <strong>Max cargo:</strong> ${ship.maxCargo}<br>
                                   <strong>Max slaves:</strong> ${ship.maxSlaves}`;
         } else {
             shipDesc.innerHTML = '';
         }
+        checkCrewLimit();
         updateRouteInfo();
     };
 }
@@ -163,12 +117,93 @@ async function loadCrew() {
             } else {
                 selectedCrewIds = selectedCrewIds.filter(id => id !== member.id);
             }
-            document.getElementById('crewStats').innerText = `Selected: ${selectedCrewIds.length} warriors`;
+            checkCrewLimit();
             updateSuppliesInfo();
             updateRouteInfo();
         };
         container.appendChild(div);
     });
+}
+
+function updateSuppliesInfo() {
+    let totalSupplies = 0;
+    selectedCrewIds.forEach(id => {
+        const crew = crewData.find(c => c.id == id);
+        if (crew) {
+            totalSupplies += crew.supplies;
+        }
+    });
+    
+    const dailyConsumption = selectedCrewIds.length * 2;
+    const daysOfFood = dailyConsumption > 0 ? Math.floor(totalSupplies / dailyConsumption) : 0;
+    
+    document.getElementById('totalSupplies').innerText = totalSupplies;
+    const daysSpan = document.getElementById('daysOfFood');
+    daysSpan.innerText = daysOfFood;
+    
+    if (daysOfFood < 10 && daysOfFood > 0) {
+        daysSpan.style.color = '#ffaa00';
+    } else if (daysOfFood === 0 && selectedCrewIds.length > 0) {
+        daysSpan.style.color = '#ff6b6b';
+    } else {
+        daysSpan.style.color = '#c5d6e8';
+    }
+}
+
+function updateRouteInfo() {
+    if (routeIds.length === 0) {
+        document.getElementById('totalDistance').innerText = '0';
+        document.getElementById('estimatedDays').innerText = '0';
+        return;
+    }
+    
+    let totalDistance = 0;
+    let prevX = 0, prevY = 0;
+    
+    routeIds.forEach(id => {
+        const settlement = settlementsData.find(s => s.id == id);
+        if (settlement) {
+            const dist = calculateDistance(prevX, prevY, settlement.x, settlement.y);
+            totalDistance += dist;
+            prevX = settlement.x;
+            prevY = settlement.y;
+        }
+    });
+    
+    const shipId = document.getElementById('shipSelect').value;
+    let estimatedDays = 0;
+    
+    if (shipId && selectedCrewIds.length > 0) {
+        const ship = shipsData.find(s => s.id == shipId);
+        if (ship) {
+            // Используем ПАРЫ гребцов для расчета скорости
+            const maxPairs = Math.floor(ship.maxRowers / 2);
+            const pairsCount = Math.floor(selectedCrewIds.length / 2);
+            const ratio = maxPairs > 0 ? Math.min(1.0, pairsCount / maxPairs) : 0;
+            const speed = ship.baseSpeed * ratio;
+            estimatedDays = speed > 0 ? Math.ceil(totalDistance / speed) : 0;
+        }
+    }
+    
+    document.getElementById('totalDistance').innerText = totalDistance.toFixed(1);
+    document.getElementById('estimatedDays').innerText = estimatedDays;
+    
+    const totalSupplies = selectedCrewIds.reduce((sum, id) => {
+        const crew = crewData.find(c => c.id == id);
+        return sum + (crew ? crew.supplies : 0);
+    }, 0);
+    const dailyConsumption = selectedCrewIds.length * 2;
+    const daysOfFood = dailyConsumption > 0 ? Math.floor(totalSupplies / dailyConsumption) : 0;
+    
+    const daysSpan = document.getElementById('estimatedDays');
+    if (estimatedDays > daysOfFood && daysOfFood > 0) {
+        daysSpan.style.color = '#ffaa00';
+        daysSpan.title = `Warning: Not enough supplies! Need ${estimatedDays} days but only ${daysOfFood} days of food.`;
+    } else if (estimatedDays > 0 && daysOfFood === 0) {
+        daysSpan.style.color = '#ff6b6b';
+    } else {
+        daysSpan.style.color = '#c5d6e8';
+    }
 }
 
 async function loadSettlements() {
@@ -181,10 +216,12 @@ async function loadSettlements() {
         const div = document.createElement('div');
         div.className = 'settlement-item';
         div.innerHTML = `
-            <strong>${settlement.name}</strong> (${settlement.type})<br>
-            Scale: ${settlement.scale} | Loot: ${settlement.baseLoot}<br>
-            📏 Distance: ${distance.toFixed(1)} units<br>
-            <small>${settlement.description || ''}</small>
+            <div>
+                <strong>${settlement.name}</strong> (${settlement.type})<br>
+                Scale: ${settlement.scale} | Loot: ${settlement.baseLoot}<br>
+                📏 Distance: ${distance.toFixed(1)} units<br>
+                <small>${settlement.description || ''}</small>
+            </div>
         `;
         div.onclick = () => {
             if (!routeIds.includes(settlement.id)) {
@@ -231,12 +268,12 @@ function renderRoute() {
         };
     });
     
-    // Показываем общую дистанцию
     if (routeIds.length > 0) {
         const totalDist = document.createElement('li');
         totalDist.style.background = 'rgba(15, 25, 40, 0.7)';
         totalDist.style.marginTop = '10px';
-        totalDist.style.borderLeft = '3px solid #7eb8da'; 
+        totalDist.style.borderLeft = '3px solid #7eb8da';
+        totalDist.style.color = '#c5d6e8';
         totalDist.innerHTML = `<strong>Total: ${cumulative.toFixed(1)} units</strong>`;
         container.appendChild(totalDist);
     }
@@ -247,6 +284,13 @@ async function startSimulation() {
     if (!shipId) { alert('Select a ship!'); return; }
     if (selectedCrewIds.length === 0) { alert('Select at least one warrior!'); return; }
     if (routeIds.length === 0) { alert('Select at least one settlement!'); return; }
+    
+    // Проверка лимита перед отправкой
+    const maxRowers = getMaxRowers();
+    if (selectedCrewIds.length > maxRowers) {
+        alert(`This ship can only carry ${maxRowers} warriors! You selected ${selectedCrewIds.length}.`);
+        return;
+    }
     
     try {
         const expedition = await apiRequest('/api/expeditions', 'POST', {
@@ -259,6 +303,7 @@ async function startSimulation() {
         
         const resultCard = document.getElementById('resultCard');
         const resultContent = document.getElementById('resultContent');
+        resultCard.style.display = 'block';
         
         if (result.feasible) {
             let lootText = 'No loot';
@@ -281,7 +326,6 @@ ${lootText}`;
 Reason: ${result.failureReason}`;
         }
         
-        resultCard.style.display = 'block';
         loadHistory();
     } catch (error) {
         alert('Error: ' + error.message);
@@ -310,7 +354,6 @@ async function loadHistory() {
 }
 
 function logout() {
-    // Очищаем локальные данные
     currentUser = null;
     selectedCrewIds = [];
     routeIds = [];
@@ -318,11 +361,9 @@ function logout() {
     settlementsData = [];
     crewData = [];
     
-    // Прячем основной контент, показываем форму логина
     document.getElementById('mainContent').style.display = 'none';
     document.getElementById('authSection').style.display = 'block';
     
-    // Очищаем форму
     document.getElementById('loginUsername').value = '';
     document.getElementById('loginPassword').value = '';
 }
@@ -357,7 +398,6 @@ async function register(username, password) {
     return response.json();
 }
 
-// Кнопка выхода
 document.getElementById('logoutBtn').onclick = logout;
 
 document.getElementById('loginBtn').onclick = async () => {

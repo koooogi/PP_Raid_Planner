@@ -4,102 +4,102 @@ crew:
     gender: "Male"
     age: 35
     strength: 95
-    supplies: 200
+    supplies: 80
   
   - name: "Lagertha"
     clan: "Lothbrok"
     gender: "Female"
     age: 32
     strength: 90
-    supplies: 180
+    supplies: 75
   
   - name: "Bjorn Ironside"
     clan: "Lothbrok"
     gender: "Male"
     age: 25
     strength: 92
-    supplies: 190
+    supplies: 85
   
   - name: "Floki"
     clan: "Flokison"
     gender: "Male"
     age: 40
     strength: 75
-    supplies: 150
+    supplies: 50
   
   - name: "Rollo"
     clan: "Lothbrok"
     gender: "Male"
     age: 38
     strength: 88
-    supplies: 185
+    supplies: 100
   
   - name: "Ivar the Boneless"
     clan: "Lothbrok"
     gender: "Male"
     age: 22
     strength: 85
-    supplies: 175
+    supplies: 123
   
   - name: "Ubbe"
     clan: "Lothbrok"
     gender: "Male"
     age: 28
     strength: 84
-    supplies: 170
+    supplies: 100
   
   - name: "Hvitserk"
     clan: "Lothbrok"
     gender: "Male"
     age: 26
     strength: 83
-    supplies: 170
+    supplies: 80
   
   - name: "Sigurd Snake-in-the-Eye"
     clan: "Lothbrok"
     gender: "Male"
     age: 24
     strength: 82
-    supplies: 165
+    supplies: 90
   
   - name: "Harald Finehair"
     clan: "Haraldson"
     gender: "Male"
     age: 30
     strength: 87
-    supplies: 180
+    supplies: 98
   
   - name: "Halfdan the Black"
     clan: "Haraldson"
     gender: "Male"
     age: 28
     strength: 86
-    supplies: 175
+    supplies: 111
   
   - name: "King Ecbert"
     clan: "Wessex"
     gender: "Male"
     age: 55
     strength: 70
-    supplies: 120
+    supplies: 200
   
   - name: "Athelstan"
     clan: "Unknown"
     gender: "Male"
     age: 30
     strength: 65
-    supplies: 100
+    supplies: 90
   
   - name: "Torvi"
     clan: "Earl"
     gender: "Female"
     age: 29
     strength: 78
-    supplies: 150
+    supplies: 124
   
   - name: "Helga"
     clan: "Flokison"
     gender: "Female"
     age: 35
     strength: 60
-    supplies: 140
+    supplies: 111

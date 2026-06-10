@@ -1,8 +1,8 @@
 settlements:
   - name: "Lindisfarne"
     type: "MONASTERY"
-    x: 15
-    y: 10
+    x: 80
+    y: 60
     scale: 30
     baseLoot: 5000
     slaveProbability: 0.3
@@ -12,8 +12,8 @@ settlements:
   
   - name: "Paris"
     type: "TOWN"
-    x: 45
-    y: 5
+    x: 250
+    y: 40
     scale: 80
     baseLoot: 15000
     slaveProbability: 0.2
@@ -23,8 +23,8 @@ settlements:
   
   - name: "York"
     type: "TOWN"
-    x: 20
-    y: 12
+    x: 100
+    y: 70
     scale: 50
     baseLoot: 8000
     slaveProbability: 0.25
@@ -45,8 +45,8 @@ settlements:
   
   - name: "Northumbria"
     type: "VILLAGE"
-    x: 18
-    y: 11
+    x: 90
+    y: 65
     scale: 25
     baseLoot: 3000
     slaveProbability: 0.2
@@ -56,8 +56,8 @@ settlements:
   
   - name: "Wessex"
     type: "VILLAGE"
-    x: 22
-    y: 8
+    x: 110
+    y: 50
     scale: 35
     baseLoot: 4000
     slaveProbability: 0.2
@@ -67,8 +67,8 @@ settlements:
   
   - name: "Mercia"
     type: "VILLAGE"
-    x: 21
-    y: 10
+    x: 105
+    y: 58
     scale: 32
     baseLoot: 3800
     slaveProbability: 0.18
@@ -78,8 +78,8 @@ settlements:
   
   - name: "Dublin"
     type: "PORT"
-    x: 10
-    y: 15
+    x: 50
+    y: 80
     scale: 45
     baseLoot: 5500
     slaveProbability: 0.22
@@ -89,8 +89,8 @@ settlements:
   
   - name: "Jorvik"
     type: "TOWN"
-    x: 19
-    y: 12
+    x: 95
+    y: 72
     scale: 48
     baseLoot: 7500
     slaveProbability: 0.24
@@ -100,8 +100,8 @@ settlements:
   
   - name: "Constantinople"
     type: "FORT"
-    x: 55
-    y: 20
+    x: 500
+    y: 100
     scale: 90
     baseLoot: 20000
     slaveProbability: 0.1
