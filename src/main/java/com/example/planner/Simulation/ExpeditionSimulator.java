@@ -373,4 +373,17 @@ public class ExpeditionSimulator {
             this.slaves = slaves; 
         }
     }
+    
+    //TESTS
+    public double testCalculateDistance(double x1, double y1, double x2, double y2){
+        return calculateDistance(x1, y1, x2, y2);
+    }
+    
+    public double testCalculateSpeed(int baseSpeed, int crewCount, int maxRowers){
+        return calculateSpeed(baseSpeed, crewCount, maxRowers);
+    }
+
+    public double testCalculateSuccessProbability(int fightersCount, int settlementScale){
+        return calculateSuccessProbability(fightersCount, settlementScale);
+    }
 }
