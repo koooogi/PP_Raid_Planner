@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>⚔️ Vikings Planner ⚔️</h1>
+        <h1>️[ Vikings Planner ]️</h1>
         <p>Plan your raid, get the loot!</p>
 
         <!-- Аутентификация -->
@@ -34,6 +34,11 @@
 
         <!-- Основной контент (скрыт до логина) -->
         <div id="mainContent" style="display: none;">
+            <!-- Кнопка выхода -->
+            <div style="text-align: right; margin-bottom: 10px;">
+                <button id="logoutBtn" style="background: #8b3a3a;">🚪 Logout</button>
+            </div>
+
             <!-- 1. Выбор корабля -->
             <div class="card">
                 <h2>1. Choose your ship</h2>
@@ -48,6 +53,12 @@
                 <h2>2. Choose your crew</h2>
                 <div id="crewList"></div>
                 <p id="crewStats"></p>
+                
+                <!-- Счетчик припасов -->
+                <div id="suppliesInfo" style="margin-top: 15px; padding: 10px; background: #1a1a2e; border-radius: 5px;">
+                    <strong>📦 Supplies:</strong> <span id="totalSupplies">0</span> units<br>
+                    <strong>🍞 Days of food:</strong> <span id="daysOfFood">0</span> days (with current crew)
+                </div>
             </div>
 
             <!-- 3. Выбор маршрута -->
@@ -58,11 +69,17 @@
                     <h3>Your route:</h3>
                     <ul id="routeList"></ul>
                 </div>
+                
+                <!-- Информация о маршруте -->
+                <div id="routeInfo" style="margin-top: 15px; padding: 10px; background: #1a1a2e; border-radius: 5px;">
+                    <strong>📏 Total route distance:</strong> <span id="totalDistance">0</span> units<br>
+                    <strong>⏱️ Estimated days (one way):</strong> <span id="estimatedDays">0</span> days
+                </div>
             </div>
 
             <!-- 4. Кнопка запуска -->
             <div class="card">
-                <button id="simulateBtn">START RAID!</button>
+                <button id="simulateBtn">⚔️ START RAID! ⚔️</button>
             </div>
 
             <!-- 5. Результат -->

@@ -1,6 +1,6 @@
 ships:
   - name: "Drakkar"
-    maxRowers: 60
+    maxRowers: 10
     maxCargo: 10000
     maxSlaves: 30
     baseSpeed: 12
@@ -8,7 +8,7 @@ ships:
     description: "A classic Viking longship. Excellent balance for long-distance voyages."
 
   - name: "Snekkja"
-    maxRowers: 40
+    maxRowers: 8
     maxCargo: 6000
     maxSlaves: 20
     baseSpeed: 14
@@ -16,7 +16,7 @@ ships:
     description: "A lighter and faster ship. Ideal for quick raids."
 
   - name: "Busse"
-    maxRowers: 80
+    maxRowers: 15
     maxCargo: 15000
     maxSlaves: 40
     baseSpeed: 10
@@ -24,7 +24,7 @@ ships:
     description: "A large cargo ship. Slow, but spacious."
 
   - name: "Karvi"
-    maxRowers: 30
+    maxRowers: 5
     maxCargo: 4000
     maxSlaves: 15
     baseSpeed: 11
@@ -32,7 +32,7 @@ ships:
     description: "A small ship for reconnaissance and small squads."
 
   - name: "Skeið"
-    maxRowers: 100
+    maxRowers: 20
     maxCargo: 20000
     maxSlaves: 50
     baseSpeed: 9

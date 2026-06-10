@@ -6,7 +6,7 @@ settlements:
     scale: 30
     baseLoot: 5000
     slaveProbability: 0.3
-    minSlaves: 0
+    minSlaves: 1
     maxSlaves: 10
     description: "Famous monastery, rich in treasures"
   
@@ -39,7 +39,7 @@ settlements:
     scale: 40
     baseLoot: 6000
     slaveProbability: 0.15
-    minSlaves: 0
+    minSlaves: 4
     maxSlaves: 8
     description: "Main Viking trading port (starting point)"
   
@@ -50,7 +50,7 @@ settlements:
     scale: 25
     baseLoot: 3000
     slaveProbability: 0.2
-    minSlaves: 0
+    minSlaves: 3
     maxSlaves: 8
     description: "Rich farming village"
   
@@ -61,7 +61,7 @@ settlements:
     scale: 35
     baseLoot: 4000
     slaveProbability: 0.2
-    minSlaves: 0
+    minSlaves: 2
     maxSlaves: 10
     description: "Kingdom of Wessex"
   
@@ -72,7 +72,7 @@ settlements:
     scale: 32
     baseLoot: 3800
     slaveProbability: 0.18
-    minSlaves: 0
+    minSlaves: 3
     maxSlaves: 9
     description: "Kingdom of Mercia"
   
@@ -95,7 +95,7 @@ settlements:
     baseLoot: 7500
     slaveProbability: 0.24
     minSlaves: 2
-    maxSlaves: 14
+    maxSlaves: 20
     description: "Viking York"
   
   - name: "Constantinople"
