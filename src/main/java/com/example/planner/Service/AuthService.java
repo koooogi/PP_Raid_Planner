@@ -22,11 +22,6 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     
     public AuthResponse register(AuthRequest request){
-        
-            System.out.println("=== REGISTER DEBUG ===");
-    System.out.println("Request object: " + request);
-    System.out.println("Username: '" + request.getUsername() + "'");
-    System.out.println("Password: '" + request.getPassword() + "'");
     
     if (request.getUsername() == null) {
         throw new RuntimeException("Username is null");
