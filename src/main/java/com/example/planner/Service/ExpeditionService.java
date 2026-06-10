@@ -36,11 +36,6 @@ public class ExpeditionService {
     
     public Expedition createExpedition(ExpeditionRequestDto request){
         
-        System.out.println("=== CREATE EXPEDITION ===");
-        System.out.println("Request shipId: " + request.getShipId());
-        System.out.println("Request crewIds: " + request.getCrewIds());
-        System.out.println("Request settlementIds: " + request.getSettlementIds());
-        
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new RuntimeException("User not found"));
@@ -69,10 +64,6 @@ public class ExpeditionService {
         expedition.setStatus(ExpeditionStatus.PLANNED);
         
         Expedition saved = expeditionRepository.save(expedition);
-        System.out.println("Saved expedition with ID: " + saved.getId());
-        System.out.println("Saved shipId: " + saved.getShipId());
-        System.out.println("Saved crewIds: " + saved.getCrewIds());
-        System.out.println("Saved route: " + saved.getRoute());
         
         return saved;
     }
@@ -81,12 +72,6 @@ public class ExpeditionService {
         
         Expedition expedition = expeditionRepository.findById(expeditionId)
             .orElseThrow(() -> new RuntimeException("Expedition not found"));
-        
-        System.out.println("=== RETRIEVED EXPEDITION ===");
-        System.out.println("Expedition ID: " + expedition.getId());
-        System.out.println("Ship ID from DB: " + expedition.getShipId());
-        System.out.println("Crew IDs from DB: " + expedition.getCrewIds());
-        System.out.println("Route from DB: " + expedition.getRoute());
         
         SimulationResultDto result = simulator.simulate(expedition);
         
