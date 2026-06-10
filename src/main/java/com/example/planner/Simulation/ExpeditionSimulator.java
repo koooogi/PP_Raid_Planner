@@ -199,59 +199,119 @@ public class ExpeditionSimulator {
     }
     
     private double calculateSpeed(int baseSpeed, int crewCount, int maxRowers){
-        double speed = baseSpeed * Math.min(1.0, (double) crewCount / maxRowers);
+        
+        int maxPairs = maxRowers/2;
+        int pairsCount = crewCount/2;
+        
+        double ratio = Math.min(1.0, (double) pairsCount / maxPairs);
+        double speed = baseSpeed * ratio;
+        
         return Math.max(MIN_SPEED, speed);
     }
     
-    private RaidResult simulateRaid(Settlement settlement, int fightersCount, int currentCargo, int maxCargo, int currentSlaves, int maxSlaves){
-        RaidResult result = new RaidResult();
+    private RaidResult simulateRaid(Settlement settlement, int fightersCount, int currentCargo, int maxCargo, int currentSlaves, int maxSlaves) {
         
+        RaidResult result = new RaidResult();
+
         double successProb = calculateSuccessProbability(fightersCount, settlement.getScale());
         boolean success = random.nextDouble() < successProb;
         result.setSuccess(success);
-        
+
         if (!success) {
             return result;
         }
-        
+
         int freeSpace = maxCargo - currentCargo;
         int freeSlaveSpace = maxSlaves - currentSlaves;
-        
+
         if (freeSpace <= 0 && freeSlaveSpace <= 0) {
             result.setLootValue(0);
             result.setSlaves(0);
             return result;
         }
-        
+
         double multiplier = 0.7 + random.nextDouble() * 0.8;
         int totalLoot = (int) (settlement.getBaseLoot() * multiplier);
-        totalLoot = Math.min(totalLoot, freeSpace);
+
+        if (totalLoot <= 0) {
+            result.setLootValue(0);
+            return result;
+        }
         
-        Map<LootType, Integer> lootByType = new HashMap<>();
-        int remaining = totalLoot;
-        
-        LootType[] types = {LootType.GOLD, LootType.SILVER, LootType.WEAPONS, LootType.JEWELRY};
-        for(LootType type : types){
-            int amount = (int) (totalLoot * (0.1 + random.nextDouble() * 0.3));
-            if (amount > remaining) amount = remaining;
+        int mainTypesTotal = (int) (totalLoot * 0.98);   // 98% на основные типы
+        int foodAmount = totalLoot - mainTypesTotal;     // 2% на еду
+
+        double[] shares = new double[4];
+        double sum = 0;
+        for (int i = 0; i < 3; i++) {
+            shares[i] = random.nextDouble();
+            sum += shares[i];
+        }
+        shares[3] = 1.0 - sum;  //последний тип получает остаток
+
+        LootType[] mainTypes = {LootType.GOLD, LootType.SILVER, LootType.WEAPONS, LootType.JEWELRY};
+        Map<LootType, Integer> fullLootByType  = new HashMap<>();
+
+        int allocated = 0;
+        for (int i = 0; i < mainTypes.length; i++) {
+            int amount = (int) (mainTypesTotal * shares[i]);
             if (amount > 0) {
-                lootByType.put(type, amount);
-                remaining -= amount;
+                fullLootByType .put(mainTypes[i], amount);
+                allocated += amount;
             }
         }
-                
-        int foodLoot = (int) (totalLoot * (0.1 + random.nextDouble() * 0.2));
+
+        int remaining = mainTypesTotal - allocated;
+        if (remaining > 0) {
+            fullLootByType .merge(LootType.GOLD, remaining, Integer::sum);
+        }
+
+        fullLootByType.put(LootType.SUPPLIES, foodAmount);
+        int fullTotal = fullLootByType.values().stream().mapToInt(Integer::intValue).sum(); // fullTotal должно равняться totalLoot
         
-        result.setLootValue(totalLoot);
-        result.setLootByType(lootByType);
-        result.setFoodLoot(foodLoot);
+        //применяем ограничение по месту
+        int actualTotal = Math.min(fullTotal, freeSpace);
+        double proportion = (double) actualTotal / fullTotal;
         
-        if(random.nextDouble() < settlement.getSlaveProbability()){
-            int slaves = settlement.getMinSlaves() + random.nextInt(settlement.getMaxSlaves() - settlement.getMinSlaves() + 1);
-            slaves = Math.min(slaves, freeSlaveSpace);
-            result.setSlaves(slaves);
+        Map<LootType, Integer> actualLootByType = new HashMap<>();
+        for (Map.Entry<LootType, Integer> entry : fullLootByType.entrySet()) {
+            int proportionalAmount = (int) Math.round(proportion * entry.getValue());
+            if (proportionalAmount > 0) {
+            actualLootByType.put(entry.getKey(), proportionalAmount);
+            }
         }
         
+        //корректируем округление
+        int actualSum = actualLootByType.values().stream().mapToInt(Integer::intValue).sum();
+        int diff = actualTotal - actualSum;
+        if(diff != 0 && actualLootByType.containsKey(LootType.GOLD)){
+            actualLootByType.merge(LootType.GOLD, diff, Integer::sum);
+        }else if (diff != 0){
+        actualLootByType.merge(LootType.GOLD, diff, Integer::sum);
+        }
+        
+        //захват рабов
+        int slaves = 0;
+        if (random.nextDouble() < settlement.getSlaveProbability() && freeSlaveSpace > 0) {
+            int maxPossibleSlaves = Math.min(settlement.getMaxSlaves(), freeSlaveSpace);
+            if (maxPossibleSlaves >= settlement.getMinSlaves()) {
+                slaves = settlement.getMinSlaves() + random.nextInt(maxPossibleSlaves - settlement.getMinSlaves() + 1);
+            } else {
+                slaves = maxPossibleSlaves;
+            }
+        }
+        
+        //минус еда
+        int actualFoodLoot = actualLootByType.getOrDefault(LootType.SUPPLIES, 0);
+        actualLootByType.remove(LootType.SUPPLIES);
+        
+        int lootWithoutFood = actualTotal - actualFoodLoot;
+
+        result.setLootValue(lootWithoutFood);
+        result.setLootByType(actualLootByType);
+        result.setFoodLoot(actualFoodLoot);
+        result.setSlaves(slaves);
+
         return result;
     }
     
