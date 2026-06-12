@@ -37,7 +37,11 @@ public class DataLoader implements CommandLineRunner{
 
     private void loadShips() throws Exception{
         //убираем старые данные перед загрузкой
-        shipRepository.deleteAll();
+//        shipRepository.deleteAll();
+        if (shipRepository.count() > 0) {
+            System.out.println("Ships already loaded (" + shipRepository.count() + " records). Skipping.");
+            return;
+        }
         
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         InputStream inputStream = getClass().getResourceAsStream("/data/viking-ships.yml");
@@ -67,7 +71,11 @@ public class DataLoader implements CommandLineRunner{
     
     private void loadCrewMembers() throws Exception{
         //убираем старые данные перед загрузкой
-        crewRepository.deleteAll();
+//        crewRepository.deleteAll();
+        if (crewRepository.count() > 0) {
+            System.out.println("Crew already loaded (" + crewRepository.count() + " records). Skipping.");
+            return;
+        }
         
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         InputStream inputStream = getClass().getResourceAsStream("/data/crew-members.yml");
@@ -96,8 +104,13 @@ public class DataLoader implements CommandLineRunner{
     
     private void loadSettlements() throws Exception {
         //убираем старые данные перед загрузкой
-        settlementRepository.deleteAll();
-        
+//        settlementRepository.deleteAll();
+
+        if (settlementRepository.count() > 0) {
+            System.out.println("Settlements already loaded (" + settlementRepository.count() + " records). Skipping.");
+            return;
+        }        
+
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         InputStream inputStream = getClass().getResourceAsStream("/data/settlements.yml");
         
